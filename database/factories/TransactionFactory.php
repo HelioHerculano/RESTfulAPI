@@ -25,7 +25,7 @@ class TransactionFactory extends Factory
         return [
             'quantity' => fake()->numberBetween(1,3),
             'buyer_id' => $buyer->id,
-            'product_id' => $seller->id,
+            'product_id' => $seller->products->random()->id,
         ];
     }
 }
