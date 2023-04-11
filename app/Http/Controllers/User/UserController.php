@@ -25,7 +25,7 @@ class UserController extends ApiController
      */
     public function store(Request $request)
     {
-
+       // $this->authorize('create',User::class);
         $roles = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
