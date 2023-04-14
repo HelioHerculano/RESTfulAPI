@@ -8,16 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Buyer;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'quantity',
         'buyer_id',
         'product_id',
     ];
+    protected $dates = ['deleted_at'];
+
 
     public function product(){
         return $this->BelongsTo(Product::class);

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Seller;
 use App\Models\Transaction;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';
@@ -23,6 +24,7 @@ class Product extends Model
         'image',
         'seller_id'
     ];
+    protected $dates = ['deleted_at'];
 
     public function isAvailable(){
         return $this->status == Product::AVAILABLE_PRODUCT;

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->foreignId('buyer_id');
             $table->foreignId('product_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('buyer_id')->references('id')->on('users');

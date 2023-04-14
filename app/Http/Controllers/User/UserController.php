@@ -48,19 +48,16 @@ class UserController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        $user = User::findOrFail($id);
-
         return $this->showOne($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
 
         $roles = [
             'email' => 'email|unique:users,email,'. $user->id,
@@ -101,9 +98,8 @@ class UserController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
         $user->delete();
 
         return $this->showOne($user);
