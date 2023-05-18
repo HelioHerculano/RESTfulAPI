@@ -5,9 +5,21 @@ use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Buyer\BuyerTransactionController;
+use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Category\CategoryProcductController;
+use App\Http\Controllers\Category\CategorySellerController;
+use App\Http\Controllers\Category\CategoryTransactionController;
+use App\Http\Controllers\Product\ProductBuyerController;
+use App\Http\Controllers\Product\ProductBuyerTransactionController;
+use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\product\ProductTransactionController;
+use App\Http\Controllers\Seller\SellerBuyerController;
+use App\Http\Controllers\Seller\SellerCategoryController;
 use App\Http\Controllers\Seller\SellerController;
+use App\Http\Controllers\Seller\SellerProductController;
+use App\Http\Controllers\Seller\SellerTransactionsController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
 use App\Http\Controllers\Transaction\TransactionController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
@@ -39,16 +51,29 @@ use Illuminate\Support\Facades\Route;
  * Categories
  */
 Route::resource('categories',CategoryController::class)->except(['create','edit']);
+Route::resource('categories.products',CategoryProcductController::class)->only(['index']);
+Route::resource('categories.sellers',CategorySellerController::class)->only(['index']);
+Route::resource('categories.transactions',CategoryTransactionController::class)->only(['index']);
+Route::resource('categories.buyers',CategoryBuyerController::class)->only(['index']);
+
 
 /**
  * Products
  */
 Route::resource('products',ProductController::class)->only(['index','show']);
+Route::resource('products.transactions',ProductTransactionController::class)->only(['index']);
+Route::resource('products.buyers',ProductBuyerController::class)->only(['index']);
+Route::resource('products.buyers.transactions',ProductBuyerTransactionController::class)->only(['store']);
+Route::resource('products.categories',ProductCategoryController::class)->only(['index','update','destroy']);
 
 /**
  * Sellers
  */
 Route::resource('sellers',SellerController::class)->only(['index','show']);
+Route::resource('sellers.transactions',SellerTransactionsController::class)->only(['index']);
+Route::resource('sellers.categories',SellerCategoryController::class)->only(['index']);
+Route::resource('sellers.buyers',SellerBuyerController::class)->only(['index']);
+Route::resource('sellers.products',SellerProductController::class)->only(['index','store','update','destroy']);
 
 /**
  * Transactions
