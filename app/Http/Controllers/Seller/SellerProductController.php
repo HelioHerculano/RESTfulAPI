@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -39,7 +40,7 @@ class SellerProductController extends ApiController
             $data = $request->all();
 
             $data['status'] = Product::UNAVAILABLE_PRODUCT;
-            $data['image'] = '2.jpg';
+            $data['image'] = $request->file("image")->store('img','images');
             $data['seller_id'] = $seller->id;
 
             $product = Product::create($data);
@@ -57,7 +58,7 @@ class SellerProductController extends ApiController
             'quantity' => 'integer|min:1',
             'status' => 'in:' . Product::AVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
             'image' => 'image',
-        ];    
+        ];
 
         $validator = Validator::make($request->all(),$rules);
 
@@ -79,7 +80,12 @@ class SellerProductController extends ApiController
                 }
             }
 
-            //The method isClean() verifie that anything changed at product table our not 
+            if($request->hasFile('image')){
+                Storage::disk('images')->delete($product->image);
+                $product->image = $request->file('image')->store('img','images');
+            }
+
+            //The method isClean() verifie that anything changed at product table our not
             if($product->isClean()){
                 return $this->errorResponse('You neeed to specify a different value to update',422);
             }
@@ -96,12 +102,14 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller, Product $product){
 
             $this->checkSeller($seller,$product);
-
-
+            
             $product->delete();
 
+            Storage::disk('images')->delete($product->image);
+
+
             return $this->showOne($product);
-    
+
 
     }
 
