@@ -30,7 +30,7 @@ class UserCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'User Created', 
+            subject: 'Please confirm your new email' 
         );
     }
 
@@ -40,7 +40,7 @@ class UserCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.welcome',
+            markdown: 'emails.welcome',
             with:[
                 'user' =>$this->user
             ]
